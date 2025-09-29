@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Zap, Volume2, Brain, Copy, CheckCircle } from 'lucide-react';
+import { Zap, Volume2, Brain, Copy, CircleCheck as CheckCircle } from 'lucide-react';
 
 const ReplyGenerator = ({ chatData, stealthMode }) => {
   const [language, setLanguage] = useState('english');
