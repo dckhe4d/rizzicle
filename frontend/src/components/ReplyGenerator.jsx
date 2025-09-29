@@ -45,7 +45,7 @@ const ReplyGenerator = ({ chatData, stealthMode }) => {
     setReplies([]);
 
     try {
-      const response = await fetch('http://localhost:3001/api/generate-replies', {
+      const response = await fetch('/api/generate-replies', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
