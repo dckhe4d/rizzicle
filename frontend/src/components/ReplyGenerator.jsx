@@ -73,61 +73,75 @@ const ReplyGenerator = ({ chatData, stealthMode }) => {
   };
 
   const generateClientFallbackReplies = () => {
-    // Fixed Rizzicle replies that follow the rules:
-    // Rule 1: Answer directly first
-    // Rule 2: Add flirty/teasing twist if it fits
-    // Rule 3: Never ignore the question
-    const fallbackReplies = {
-      flirty: {
-        replies: [
-          "That's actually interesting. You're full of surprises, aren't you? 😏",
-          "Fair point. I like how your mind works ✨",
-          "You're right about that. Keep talking, I'm listening 👀"
-        ]
+    // Analyze the chat to understand what they're talking about
+    const lastMessage = chatData?.originalText?.split('\n').filter(line => line.trim()).pop() || '';
+    const lowerMessage = lastMessage.toLowerCase();
+    
+    // Context-aware fallback replies
+    const contextualFallbacks = {
+      // If they mention food
+      food: {
+        triggers: ['hungry', 'food', 'eat', 'pizza', 'coffee'],
+        flirty: ["I know a great place we should try together 😏", "I make amazing food, want me to cook for you? 😉"],
+        teasing: ["Let me guess, you can't cook? 😜", "Someone's always hungry 😏"],
+        sweet: ["You should eat something good 🥺", "Make sure you're taking care of yourself ☀️"],
+        direct: ["What are you in the mood for?", "I'm hungry too actually"],
+        witty: ["My cooking skills > your hunger ⚡", "Food is life, I get it 🧠"],
+        savage: ["Your stomach has perfect timing 🔥", "Always thinking with your stomach 💥"]
       },
-      teasing: {
-        replies: [
-          "Oh really? Someone's feeling confident today 😜",
-          "That's what you think. We'll see about that 😏",
-          "Interesting take. You're trouble, aren't you? 😈"
-        ]
+      
+      // If they mention being tired/bored
+      feelings: {
+        triggers: ['tired', 'bored', 'sad', 'stressed'],
+        flirty: ["I know something that might cheer you up 😏", "Come here, you need a hug 🫂"],
+        teasing: ["Drama queen much? 😜", "Someone needs attention 😏"],
+        sweet: ["I'm sorry you're feeling that way 🥺", "Sending you good vibes ✨"],
+        direct: ["That sucks, what happened?", "Want to talk about it?"],
+        witty: ["Your problems vs my jokes ⚡", "Time for some retail therapy? 🧠"],
+        savage: ["Life's tough, deal with it 🔥", "First world problems 💥"]
       },
-      direct: {
-        replies: [
-          "Exactly. No point beating around the bush 💯",
-          "Facts. I respect the honesty 🎯",
-          "True. Let's keep it real here"
-        ]
+      
+      // If they ask what you're doing
+      activities: {
+        triggers: ['what are you doing', 'wyd', 'up to', 'doing'],
+        flirty: ["Just thinking about you actually 😏", "Nothing as interesting as talking to you 😉"],
+        teasing: ["Wouldn't you like to know 😜", "Something cooler than whatever you're doing 😏"],
+        sweet: ["Just relaxing, what about you? 🥺", "Missing our chats ☀️"],
+        direct: ["Just chilling, you?", "Not much, what's up?"],
+        witty: ["Plotting world domination ⚡", "The usual chaos 🧠"],
+        savage: ["None of your business 🔥", "Why do you care? 💥"]
       },
-      witty: {
-        replies: [
-          "Good point. My brain is still processing that one ⚡",
-          "That's actually clever. You're smarter than you look 😅",
-          "Fair enough. Plot twist: you might be right 🎭"
-        ]
-      },
-      sweet: {
-        replies: [
-          "That's really thoughtful. You're actually pretty sweet 🥺",
-          "Aww, that's nice. You just made my day better ☀️",
-          "That's so sweet. This is why I like our chats 💕"
-        ]
-      },
-      savage: {
-        replies: [
-          "Bold move. Someone's feeling spicy today 🌶️",
-          "Damn. You really went there, didn't you? 🔥",
-          "Shots fired. I respect the energy 💥"
-        ]
+      
+      // Default for everything else
+      general: {
+        flirty: ["Interesting... tell me more 😏", "You always know what to say 😉", "I like where this is going 👀"],
+        teasing: ["That's what you think 😜", "Sure, sure 😏", "If you say so 🙄"],
+        sweet: ["You're so thoughtful 🥺", "That's really nice ☀️", "I appreciate you 💕"],
+        direct: ["I hear you", "Makes sense", "Fair point"],
+        witty: ["My brain is processing that ⚡", "Plot twist incoming 🎭", "You got me there 💭"],
+        savage: ["Bold move 🌶️", "Someone's feeling spicy 🔥", "Shots fired 💥"]
       }
     };
+    
+    // Find which context matches
+    let matchedContext = 'general';
+    for (const [contextName, contextData] of Object.entries(contextualFallbacks)) {
+      if (contextName === 'general') continue;
+      if (contextData.triggers.some(trigger => lowerMessage.includes(trigger))) {
+        matchedContext = contextName;
+        break;
+      }
+    }
+    
+    const contextData = contextualFallbacks[matchedContext];
 
     return selectedTones.map(tone => {
-      const toneReplies = fallbackReplies[tone].replies;
+      const toneReplies = contextData[tone] || contextualFallbacks.general[tone];
       const randomReply = toneReplies[Math.floor(Math.random() * toneReplies.length)];
       return {
         tone: tone,
-        reply: randomReply
+        reply: randomReply,
+        explanation: `Responds to "${matchedContext}" context with ${tone} energy`
       };
     });
   };
