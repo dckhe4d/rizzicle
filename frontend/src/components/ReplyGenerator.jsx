@@ -35,6 +35,15 @@ const ReplyGenerator = ({ chatData, stealthMode }) => {
     { id: 'funny', label: 'Funny', emoji: '😂' }
   ];
 
+  const generateClientFallbackReplies = () => {
+    // Simple fallback only for when backend completely fails
+    return selectedTones.map(tone => ({
+      tone: tone,
+      reply: "Backend connection failed. Please try again.",
+      explanation: "Connection error - please refresh and try again"
+    }));
+  };
+
   const generateReplies = async () => {
     if (!chatData) {
       alert('Please add some chat text first! Go to "Chat Analyzer" tab.');
