@@ -73,47 +73,51 @@ const ReplyGenerator = ({ chatData, stealthMode }) => {
   };
 
   const generateClientFallbackReplies = () => {
+    // Fixed Rizzicle replies that follow the rules:
+    // Rule 1: Answer directly first
+    // Rule 2: Add flirty/teasing twist if it fits
+    // Rule 3: Never ignore the question
     const fallbackReplies = {
       flirty: {
         replies: [
-          "Your energy is everything ✨",
-          "Keep talking, I'm listening 👀",
-          "You're making this interesting 😏"
+          "That's actually interesting. You're full of surprises, aren't you? 😏",
+          "Fair point. I like how your mind works ✨",
+          "You're right about that. Keep talking, I'm listening 👀"
         ]
       },
       teasing: {
         replies: [
-          "Oh really? Tell me more 🤔",
-          "Someone's being mysterious today 😜",
-          "That's what you think 😏"
+          "Oh really? Someone's feeling confident today 😜",
+          "That's what you think. We'll see about that 😏",
+          "Interesting take. You're trouble, aren't you? 😈"
         ]
       },
       direct: {
         replies: [
-          "Let's be honest here 💯",
-          "Cut to the chase",
-          "No games, just truth 🎯"
+          "Exactly. No point beating around the bush 💯",
+          "Facts. I respect the honesty 🎯",
+          "True. Let's keep it real here"
         ]
       },
       witty: {
         replies: [
-          "Careful, my brain is loading ⚡",
-          "That's... actually smart 🧠",
-          "Plot twist incoming 🎭"
+          "Good point. My brain is still processing that one ⚡",
+          "That's actually clever. You're smarter than you look 😅",
+          "Fair enough. Plot twist: you might be right 🎭"
         ]
       },
       sweet: {
         replies: [
-          "You're so thoughtful 🥺",
-          "That's actually really sweet 💕",
-          "You made my day better ☀️"
+          "That's really thoughtful. You're actually pretty sweet 🥺",
+          "Aww, that's nice. You just made my day better ☀️",
+          "That's so sweet. This is why I like our chats 💕"
         ]
       },
       savage: {
         replies: [
-          "That's a bold move 🔥",
-          "Someone's feeling spicy today 🌶️",
-          "Shots fired 💥"
+          "Bold move. Someone's feeling spicy today 🌶️",
+          "Damn. You really went there, didn't you? 🔥",
+          "Shots fired. I respect the energy 💥"
         ]
       }
     };
